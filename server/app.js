@@ -1,5 +1,4 @@
 import express from 'express'
-import { controller } from './controllers'
 
 
 
@@ -7,7 +6,7 @@ import { controller } from './controllers'
 const app = express()
 
 app.use(express.json())
-app.use('/api', route)
+// app.use('/api', route)
 
 
 // TODO 
