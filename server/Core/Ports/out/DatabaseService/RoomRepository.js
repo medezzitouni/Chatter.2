@@ -4,9 +4,6 @@
 
 // this class gonna be extended by the Dao layer
 export default class RoomRepository{
-
-    constructor() { }
-
     
     add(roomInstance) {
         return Promise.reject(new Error('not implemented'));

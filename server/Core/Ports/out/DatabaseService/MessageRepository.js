@@ -2,12 +2,9 @@
 
 
 
-// this class gonna be extended by the Dao layer
+// this class gon' be extended by the Dao layer
 export default class MessageRepository{
 
-    constructor() { }
-
-    
     add(messageInstance) {
         return Promise.reject(new Error('not implemented'));
     }
@@ -20,7 +17,7 @@ export default class MessageRepository{
         return Promise.reject(new Error('not implemented'));
     }
 
-    getById(messageId) {
+    getById(messageId) { 
         return Promise.reject(new Error('not implemented'));
     }
 
