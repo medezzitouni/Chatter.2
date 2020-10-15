@@ -1,4 +1,4 @@
-import { RequireParam } from '../../helpers'
+import { RequireParam } from '../../../helpers'
 
 
 
