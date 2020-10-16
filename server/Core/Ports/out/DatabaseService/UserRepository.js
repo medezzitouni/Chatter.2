@@ -12,15 +12,23 @@ export default class UserRepository{
         return Promise.reject(new Error('not implemented'));
     }
 
-    delete(userInstance) {
+    delete(userId) {
         return Promise.reject(new Error('not implemented'));
     }
 
     getById(userId) {
+        // repo.find({username: '', passworod: ''})
         return Promise.reject(new Error('not implemented'));
     }
 
-    getByEmail(userId) {
+    getByEmail(email) {
+        return Promise.reject(new Error('not implemented'));
+    }
+    getByUsername(username) {
+        return Promise.reject(new Error('not implemented'));
+    }
+    
+    find(inputs){
         return Promise.reject(new Error('not implemented'));
     }
 

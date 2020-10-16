@@ -6,9 +6,9 @@ import connection from './db.connection'
 
 
 
-export default (() => {
+export default ( async () => {
     
-    return connection(admin, serviceAccountKey);
+    return await connection(admin, serviceAccountKey);
     
 })();
 

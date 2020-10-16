@@ -5,7 +5,7 @@ export default class RoomDatabaseAdapter extends RoomRepository{
     
     constructor(db){
         super()
-        _db = db
+        let _db = db
 
         this.db = () => _db
         this.setDB = (db) => {_db = db}

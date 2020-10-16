@@ -1,25 +1,41 @@
 import express from 'express'
-
-
-
+import route from './routes'
+import { InternalServerError, 
+         InvalidPropertyError,
+         RequiredParameterError,
+         UniqueConstraintError
+   } from './helpers/errors'
 
 const app = express()
 
+
+
+// app.use(express.static(path.join(__dirname, 'public')))
+
 app.use(express.json())
-// app.use('/api', route)
+.use(express.urlencoded({ extended: true }))
+.use(express.json())
+.use('/api', route)
 
 
-// TODO 
-      // ! make an express framework adapter 
-     // ! make a request adapter, controller Adapter factory,  for all controllers 
-    // ! make the Registrycontroller and the LoginController
-   // ! inside the controllers call the use-case function
-  // ! inside the use-case call entity (do the business logic and )
- // ! call the DAO (Data Access Object) to add the entity.doc() to the DB
-// ! return a response with a body equial to entity.model()
 
 
-module.exports = app;
+
+// middleware nonexistent 
+app.use((req, res, next) =>{
+    res.setHeader('content-type', 'text/plain')
+    res.status(404).send("WE ARE SORRY, NOTHING FOUND")
+
+})
+  
+// error-handling middleware
+
+app.use((err, req, res, next) =>{
+    console.log("I catch it " + err.stack)
+    res.status(500).send("something broke, we are sorry, try later")
+})
+
+export default app;
 
 
 

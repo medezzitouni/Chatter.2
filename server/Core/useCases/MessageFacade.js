@@ -4,7 +4,7 @@ import { IMessageFacade } from '../Ports/in/Facade'
 export default class MessageFacade extends IMessageFacade{ 
     
     constructor(messageRepository){
-        
+        super()
         let _messageRepository = messageRepository
 
         this.messageRepository = () => _messageRepository
@@ -12,6 +12,8 @@ export default class MessageFacade extends IMessageFacade{
  
         Object.freeze(this)
     }
+
+    
 
     add(messageInstance) {
         return Promise.reject(new Error('not implemented'));

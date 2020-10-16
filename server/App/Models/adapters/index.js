@@ -5,7 +5,7 @@ import sanitizeAdapter from './sanitize.adapter'
 
 export default Object.freeze({
     hashAdapter,
-    sanitizeAdapter,
+    sanitizeAdapter
 })
 
 export {

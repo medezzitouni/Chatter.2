@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import {InternalServerError } from '../helpers/errors'
+import {InternalServerError } from '../../../helpers/errors'
 
 export default async function hash(input){
     try {

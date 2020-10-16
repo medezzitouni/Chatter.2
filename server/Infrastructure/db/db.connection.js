@@ -7,7 +7,7 @@ export default function(admin, serviceAccountKey){
     admin.initializeApp({
             credential: admin.credential.cert(serviceAccountKey)
         })
-        const db = null
+        var db = null
         db = admin.firestore()
         if(!db) reject('db is not connected')
         else resolve(db) 

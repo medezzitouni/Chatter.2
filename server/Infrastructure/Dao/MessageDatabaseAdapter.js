@@ -7,7 +7,7 @@ export default class MesssageDatabaseAdapter extends MessageRepository{
     
     constructor(db){
         super()
-        _db = db
+        let _db = db
 
         this.db = () => _db
         this.setDB = (db) => {_db = db}

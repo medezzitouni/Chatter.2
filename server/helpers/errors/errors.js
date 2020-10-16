@@ -21,7 +21,7 @@ export class UniqueConstraintError extends Error {
   export class RequiredParameterError extends Error {
     constructor (param) {
       super(`${param} can not be null or undefined.`)
-  
+      this.param = param
       if (Error.captureStackTrace) {
         Error.captureStackTrace(this, RequiredParameterError)
       }
@@ -41,5 +41,6 @@ export class UniqueConstraintError extends Error {
   export default {
       InvalidPropertyError,
       RequiredParameterError,
-      UniqueConstraintError
-  }
+      UniqueConstraintError,
+      InternalServerError
+    }

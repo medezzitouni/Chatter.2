@@ -1,13 +1,13 @@
 import { RequireParam } from '../../../helpers'
 
-export default function createLoginModel({ sanitize= RequireParam('username') }){
+export default function createLoginModel({ sanitize= RequireParam('sanitize') }){
     
     return class LoginModel{
 
         constructor({username = RequireParam('username'), password= RequireParam('password')}){
             
-            _username = sanitize(username)
-            _password = sanitize(password)
+            let _username = sanitize(username)
+            let _password = sanitize(password)
             
             //! getters
             this.username = () => _username

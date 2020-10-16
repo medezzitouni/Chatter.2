@@ -3,7 +3,7 @@ import { IRoomFacade } from '../Ports/in/Facade'
 
 export default class RoomFacade extends IRoomFacade{ 
     constructor(roomRepository){
-        
+        super()
         let _roomRepository = roomRepository
 
         this.roomRepository = () => _roomRepository
