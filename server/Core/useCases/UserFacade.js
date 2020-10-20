@@ -34,8 +34,9 @@ export default class UserFacade extends IUserFacade{
     getByEmail(email) {
         return Promise.reject(new Error('not implemented'));
     }
-    getByUsername(username) {
-        return this.userRepository().getByUsername(username);
+    async getByUsername(username) {
+        const userInstance = await this.userRepository().getByUsername(username)
+        return userInstance.modal();
     }
     
     find(inputs){
