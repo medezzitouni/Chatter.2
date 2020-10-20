@@ -38,9 +38,20 @@ export class UniqueConstraintError extends Error {
     }
   }
 
+  export class NotExistError extends Error {
+    constructor (instance) {
+      super(`${instance} doesn't exist`)
+  
+      if (Error.captureStackTrace) {
+        Error.captureStackTrace(this, RequiredParameterError)
+      }
+    }
+  }
+
   export default {
       InvalidPropertyError,
       RequiredParameterError,
       UniqueConstraintError,
-      InternalServerError
-    }
+      InternalServerError,
+      NotExistError
+  }

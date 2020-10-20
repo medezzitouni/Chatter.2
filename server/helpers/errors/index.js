@@ -2,7 +2,8 @@ import error, {
         InvalidPropertyError, 
         RequiredParameterError,
         UniqueConstraintError,
-        InternalServerError }  from './errors'
+        InternalServerError,
+        NotExistError }  from './errors'
 
 import handleKnownErrors from './handleKnownErrors'
 
@@ -11,7 +12,8 @@ export {
     RequiredParameterError,
     UniqueConstraintError,
     InternalServerError,
-    handleKnownErrors
+    handleKnownErrors,
+    NotExistError
 }
 
 export default Object.freeze(error)
