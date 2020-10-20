@@ -5,12 +5,8 @@ import connection from './db.connection'
 
 
 
-
-export default ( async () => {
-    
-    return await connection(admin, serviceAccountKey);
-    
-})();
+const  db = connection(admin, serviceAccountKey);
+export default db
 
 
 
