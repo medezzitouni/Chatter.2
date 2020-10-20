@@ -1,9 +1,12 @@
 import Facade   from '../Core/Ports/in/Facade'
+import { hashAdapter, sanitizeAdapter } from './adapters'
 
 
 import MessageControllers from './MessageControllers'
-import UserControllers from './UserControllers'
+import createUserControllers from './UserControllers'
 import RoomControllers from './RoomControllers'
+
+const UserControllers = createUserControllers({sanitize : sanitizeAdapter})
 
 const userControllers = new UserControllers(Facade.userFacade)
 const messageControllers = new MessageControllers(Facade.messageFacade)
