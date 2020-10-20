@@ -4,13 +4,13 @@ export default class User{
 
     constructor({id, email, username, password, connected, lastConnection, roomsNumber}){
         
-        _id = id
-        _email = email
-        _username = username
-        _password = password
-        _connected = connected
-        _lastConnection = lastConnection
-        _roomsNumber = roomsNumber
+        var _id = id
+        var _email = email
+        var _username = username
+        var _password = password
+        var _connected = connected
+        var _lastConnection = lastConnection
+        var _roomsNumber = roomsNumber
         
         // gettters
         this.id = () => _id
@@ -25,7 +25,7 @@ export default class User{
 
         this.setEmail =  (email) =>   {_email = email   }
         this.setUsername = (username) => {_username = username}
-        this.setPassword = (password) => {_password = username}
+        this.setPassword = (password) => {_password = password}
         this.setConnected = (connected) =>{_connected = connected}
         this.setLastConnection = (lastConnected) => { _lastConnection = lastConnected }
         this.setRoomsNumber = (roomsNumber) => { _roomsNumber = roomsNumber}
@@ -33,5 +33,16 @@ export default class User{
 
         Object.freeze(this)
     
+    }
+
+    modal(){
+        return {
+            id: this.id(),
+            username : this.username(),
+            email : this.email(),
+            connected: this.connected(),
+            lastConnected: this.lastConnection(),
+            roomsNumber: this.roomsNumber()
+        }
     }
 }

@@ -14,13 +14,27 @@ export default class Messages{
 
         // gettters
         this.id = () => _id
+        this.body = () => _body
         this.isDeleted =  () => _isDeleted
-        this.roomChatters = () => _roomChatters
+        this.userId = () => _userId
+        this.sendingDate = () => _sendingDate
         
         // setters
+        this.setBody = (body) => { _body = body } 
         this.setIsDeleted =  () =>   { _isDeleted = !isDeleted }
+        this.setUserId = (userId) => { _userId = userId } 
         this.setSendingDate = (sendingDate) => { _sendingDate = sendingDate }
 
         Object.freeze(this)
+    }
+
+    modal(){
+        return {
+            id: this.id(),
+            body: this.body(),
+            isDeleted: this.isDeleted(),
+            userId : this.userId(),
+            sendingDate: this.sendingDate()
+        }    
     }
 }

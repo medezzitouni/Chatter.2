@@ -20,4 +20,11 @@ export default class Room{
 
         Object.freeze(this)
     }
+    modal(){
+        return {
+            id: this.id(),
+            creationDate: this.creationDate(),
+            roomChatters: this.roomChatters()
+        }    
+    }
 }
