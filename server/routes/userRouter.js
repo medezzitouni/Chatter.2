@@ -33,15 +33,18 @@ router.route('/')
 })
 
 router.route('/login')
-.post((req, res) => {
+.post(async (req, res) => {
     
     ctrls.requestAdapter(req)
-    const { headers, statusCode, data } = ctrls.login()
-    // res.set(headers)
-    //    .status(statusCode)
-    //    .send(data)
+    const { headers, statusCode, data } = await ctrls.login()
+    console.log({ headers, statusCode, data })
+    res.set(headers)
+       .status(statusCode)
+       .send(data)
 
-    
+    //! DON'T redirect just send a token, then the frontend should handle the routes based on the token 
+    //! for any data the frontend gon' need, it should send the token with request to the backend, this  
+    //! last one should verify the user authentication using that token 
     // if(statusCode === 200) res.redirect('/home') 
 
 })
