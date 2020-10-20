@@ -5,7 +5,6 @@ import MessageDatabaseAdapter from './MessageDatabaseAdapter'
 
 import db from '../db'
 
-
 export default (() => {
     // inject DB
     return {
