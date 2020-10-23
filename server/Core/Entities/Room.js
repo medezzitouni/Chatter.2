@@ -20,7 +20,7 @@ export default class Room{
 
         Object.freeze(this)
     }
-    modal(){
+    model(){
         return {
             id: this.id(),
             creationDate: this.creationDate(),

@@ -1,52 +1,53 @@
 import express from 'express'
-import { userControllers as ctrls } from '../App/index'
-
+import { userControllers as ctrls } from '../App'
+import { isAuth } from '../middlewares'
 
 const router = express.Router()
 
-
+//? root route
 router.route('/')
-// getALL users
-.get((req, res) => {
-    res.status(500).json({
-        data: new Error('not implemented yet').stack
-    })
-
-    return Promise.reject(new Error('not implemented yet'))
+//! getALL users
+.get(isAuth, async (req, res, next) => {
+    try {
+        throw new Error('not implemented yet')
+    } catch (error) {
+        next(error)
+    }
 })
-// post register (new user)
-.post((req, res) => {
-    
-    ctrls.requestAdapter(req)
-    const { headers, statusCode, data } = ctrls.registration()
-    res.set(headers)
-       .status(statusCode)
-       .send(data)
+//! post register (new user)
+.post(isAuth, async (req, res, next) => {
+    try {
+        ctrls.requestAdapter(req)
+        const { headers, statusCode, data } = await ctrls.registration()
+        res.set(headers)
+        .status(statusCode)
+        .send(data)
+    } catch (err) {
+        next(err)
+    }
 })
-// update an existed user
-.put((req, res) => {
-    res.status(500).json({
-        data: new Error('not implemented yet').stack
-    })
-
-    return Promise.reject(new Error('not implemented yet'))
+//! update an existed user infos
+.put(isAuth, async (req, res, next) => {
+    try {
+        throw new Error('not implemented yet')
+    } catch (error) {
+        next(error)
+    }
 })
-
+//? login route
 router.route('/login')
-.post(async (req, res) => {
+//! post login
+.post(async (req, res, next) => {
     
-    ctrls.requestAdapter(req)
-    const { headers, statusCode, data } = await ctrls.login()
-    console.log({ headers, statusCode, data })
-    res.set(headers)
-       .status(statusCode)
-       .send(data)
-
-    //! DON'T redirect just send a token, then the frontend should handle the routes based on the token 
-    //! for any data the frontend gon' need, it should send the token with request to the backend, this  
-    //! last one should verify the user authentication using that token 
-    // if(statusCode === 200) res.redirect('/home') 
-
+    try {
+        ctrls.requestAdapter(req)
+        const { headers, statusCode, data } = await ctrls.login()
+        res.set(headers)
+           .status(statusCode)
+           .send(data)
+    } catch (err) {
+        next(err)    
+    }
 })
 
 export default router

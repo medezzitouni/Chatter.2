@@ -1,6 +1,6 @@
 import { UserRepository } from '../../Core/Ports/out/DatabaseService'
 import { User } from '../../Core/Entities'
-import { NotExistError } from '../../helpers/errors'
+import { NotExistError, UniqueConstraintError } from '../../helpers/errors'
 
 export default class UserDatabaseAdapter extends UserRepository{    
     
@@ -16,11 +16,32 @@ export default class UserDatabaseAdapter extends UserRepository{
        this.setCollection = (collection) => { _collection = collection }
 
         Object.freeze(this)
-
     }
 
-    add(userInstance) {
-        return Promise.reject(new Error('not implemented'));
+    add(userInstance){
+        return new Promise( async (resolve, reject) => {
+
+            try {
+                const user = await this.getByUsername(userInstance.username())
+                if(user.id())
+                    reject(new UniqueConstraintError(userInstance.username(), 'username'))
+                // const user = await this.getByEmail(userInstance.email())
+                // if(user.id())
+                //     reject(new UniqueConstraintError(userInstance.email(), 'email'))
+                
+            } catch (err) {
+                if(err instanceof NotExistError){
+                    try {
+                        console.log(userInstance.entity())
+                        const userRef = await this.collection().add(userInstance.entity())
+                        const userIns = await this.getById(userRef.id)
+                        resolve(userIns)   
+                    } catch (error) {
+                        reject(error)                   
+                    }
+                }else reject(err)
+            }
+        })
     }
 
     update(userInstance) {
@@ -33,33 +54,44 @@ export default class UserDatabaseAdapter extends UserRepository{
 
     getById(userId) {
         // repo.find({username: '', passworod: ''})
-        return Promise.reject(new Error('not implemented'));
+        return new Promise( async (resolve, reject) => {
+            try {
+                const userRef = await this.collection().doc(userId)
+                const user = await userRef.get()
+                if(!user.data()) throw new Error(`problem in DB getting this id ${userId}`) 
+                resolve(new User({... user.data(), id: user.id}))
+            } catch (error) {
+                console.log(error)
+                return reject(new NotExistError('User', 'User'))
+            }
+            
+        });
     }
 
     getByEmail(email) {
         return Promise.reject(new Error('not implemented'));
     }
     getByUsername(username) {
-        return new Promise(async (res, rej) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                if(! typeof username == 'string') 
+                    return reject(new Error('username should be a string'))
             
-            if(! typeof username == 'string') 
-                rej(new Error('username should be a string'))
+                const snapshot = await this.collection().where('username', '==', username).get()
+                
+                if(snapshot.empty) 
+                    return reject(new NotExistError(username, 'username'))
+                
+                const docs = snapshot._docs()
+                if(docs.length > 1) 
+                    return reject(new Error("this username is used by more than one account, we are sorry we can't let you access"))
+                
+                const doc = await docs[0]._ref.get()
+                return resolve(new User({id: doc.id, ... doc.data()}))
+            } catch (err){
+                reject(err)
+            }
             
-            const snapshot = await this.collection().where('username', '==', username).get()
-            
-            if(snapshot.empty) 
-                rej(new NotExistError('User'))
-            
-            const docs = snapshot._docs()
-            if(docs.length > 1) 
-                rej(new Error("this username is used by more than one account, we are sorry we can't let you access"))
-            
-            const doc = await docs[0]._ref.get()
-            // console.log('dataAdapter -> ', doc.id)
-            // console.log("length -> ",  user.length, user)
-            
-            res(new User({id: doc.id, email: "", username: doc.data().username, 
-            password: doc.data().password, connected: false, lastConnection: 48, roomsNumber: 15}))
         })
 
         // return Promise.reject(new Error('not implemented'));

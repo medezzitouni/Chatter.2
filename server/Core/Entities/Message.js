@@ -28,7 +28,7 @@ export default class Messages{
         Object.freeze(this)
     }
 
-    modal(){
+    model(){
         return {
             id: this.id(),
             body: this.body(),

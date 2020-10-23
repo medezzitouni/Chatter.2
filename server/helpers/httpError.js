@@ -1,4 +1,4 @@
-export default function httpError ({ statusCode, errorMessage }) {
+export default function httpError ({ statusCode, errorMessage, inputField='', ErrorType='Error' }) {
     return {
       headers: {
         'Content-Type': 'application/json'
@@ -6,7 +6,9 @@ export default function httpError ({ statusCode, errorMessage }) {
       statusCode,
       data: JSON.stringify({
         success: false,
-        error: errorMessage
+        error: errorMessage,
+        inputField,
+        ErrorType
       })
     }
   }

@@ -1,8 +1,10 @@
 import MessageFacade from './MessageFacade'
-import UserFacade from './UserFacade'
+import createUserFacade from './UserFacade'
 import RoomFacade from './RoomFacade'
 
+import { hashAdapter } from '../../App/adapters/'
 
+const UserFacade = createUserFacade({crypt: hashAdapter})
 
 export {
     MessageFacade,

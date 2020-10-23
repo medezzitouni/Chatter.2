@@ -1,11 +1,11 @@
 
-import { RequireParam, httpError } from '../helpers'
-import { InternalServerError, handleKnownErrors } from '../helpers/errors'
+import { RequireParam, httpResponse, empty } from '../helpers'
+import { handleKnownErrors } from '../helpers/errors'
 
 
 export default function createUserControllers({ 
-    sanitize= RequireParam('sanitize')
-    // hash= RequireParm('hash')
+    sanitize= RequireParam('sanitize'),
+    tokenGenerator= RequireParm('hash') 
 }){
     return class UserControllers{
 
@@ -32,7 +32,7 @@ export default function createUserControllers({
                 const keys = ['path', 'method', 'pathParams', 'queryParams', 'body']
                 Object.keys(httpRequest).forEach(key => {
                     if(!keys.includes(key))
-                        throw new InternalServerError()
+                        throw new Error(`the ${key} doesn't exist in the request object`)
                 })
                 
                 _httpRequest = httpRequest 
@@ -43,7 +43,6 @@ export default function createUserControllers({
         }
     
         requestAdapter(req = RequireParam('Request')) {
-            // console.log('-> ', req)
             this.setHttpRequest({
                 path: req.path,
                 method: req.method,
@@ -55,51 +54,57 @@ export default function createUserControllers({
             
     
         async login(){
-            let userInstance
 
             try {
-
-                const username = sanitize(this.httpRequest().body.username)    
-                userInstance = await this.Facade().getByUsername(username)
-
-                if(userInstance.id)
-                return {
-                    headers : {
-                        'Content-Type' : 'application/json'
-                    },
-                    statusCode: 200,  // success
-                    data: JSON.stringify({
-                        success : 'ok',
-                        token: 'NOT Implemented Yet'
-                    })
-    
+                const body = sanitize(this.httpRequest().body)
+                empty(body)
+                const userModel = await this.Facade().getByUsername(body.username)
+                if(await this.Facade()
+                    .verifyPassword({userId: userModel.id, inPassword: body.password})){
+                        let token = tokenGenerator.sign({userId: userModel.id})
+                        return httpResponse({
+                            statusCode: 200,
+                            data: {
+                                userId : userModel.id,
+                                success : true,
+                                token
+                            },
+                        })
                 }
+
+
             } catch (e) {
                 const resultat = handleKnownErrors(e)
-                if(resultat) return resultat 
+                if(resultat) return resultat
+
                 // if there is any other error, just throw it
                 throw e
             }
-                
         }
         
-        registration(){
+        async registration(){
             
-            if(this.httpRequest().body && Object.keys(this.httpRequest().body).length != 0)
-                return {
-                    headers : {
-                        'Content-Type' : 'application/json'
-                    },
-                    statusCode: 201,  // created
-                    data: JSON.stringify(this.httpRequest().body)
-    
-                } 
-            else 
-                return httpError({
-                    statusCode: 400,
-                    errorMessage: `bad request.`
-                })
+            try {
+                const body = sanitize(this.httpRequest().body)
+                empty(body)
+                const userModel = await this.Facade().add(body)
                 
+                return httpResponse({
+                    statusCode: 201, // created
+                    data: {
+                        success: true,
+                        userModel, 
+                        message: 'account has been created.'
+                    }
+                })
+                // console.log('-> ', req)
+            } catch (e) {
+                const http_response = handleKnownErrors(e)
+                if(http_response) return http_response
+                
+                // if there is any other error, just throw it
+                throw e
+            }   
         }
         delete(){
             return Promise.reject(new Error('not implemented'));

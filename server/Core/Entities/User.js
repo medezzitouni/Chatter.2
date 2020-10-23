@@ -1,8 +1,14 @@
+import { RequireParam } from "../../helpers"
 
 
 export default class User{
 
-    constructor({id, email, username, password, connected, lastConnection, roomsNumber}){
+    constructor({id,
+         email= RequireParam('email'),
+         username= RequireParam('username'), 
+         password= RequireParam('password'), 
+         connected= true, lastConnection= Date.now(), roomsNumber=0
+    }){
         
         var _id = id
         var _email = email
@@ -22,7 +28,6 @@ export default class User{
         this.roomsNumber = () => _roomsNumber
     
         // setters
-
         this.setEmail =  (email) =>   {_email = email   }
         this.setUsername = (username) => {_username = username}
         this.setPassword = (password) => {_password = password}
@@ -35,13 +40,24 @@ export default class User{
     
     }
 
-    modal(){
+    model(){
         return {
             id: this.id(),
             username : this.username(),
             email : this.email(),
             connected: this.connected(),
-            lastConnected: this.lastConnection(),
+            lastConnection: this.lastConnection(),
+            roomsNumber: this.roomsNumber()
+        }
+    }
+
+    entity(){
+        return {
+            username : this.username(),
+            email : this.email(),
+            password: this.password(),
+            connected: this.connected(),
+            lastConnection: this.lastConnection(),
             roomsNumber: this.roomsNumber()
         }
     }

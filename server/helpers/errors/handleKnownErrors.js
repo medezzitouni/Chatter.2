@@ -1,63 +1,51 @@
-import { InternalServerError, 
-         RequiredParameterError,
+import { RequiredParameterError,
          UniqueConstraintError,
          InvalidPropertyError,
          NotExistError } from './index'
-
+import { httpError } from '../'
 
 
 export default function handleKnownErrors(e){
+
     if(e instanceof RequiredParameterError){
         
-        return {
-            headers : {
-                'Content-Type' : 'application/json'
-            },
-            statusCode: 400,  // bad request
-            data: JSON.stringify(e.message)
-
-        } 
-    }
-    if(e instanceof InternalServerError){
-        return {
-            headers : {
-                'Content-Type' : 'application/json'
-            },
-            statusCode: 400,  // bad request
-            data: JSON.stringify(e.message)
-
-        } 
+        return httpError({
+            statusCode: 400,
+            errorMessage: e.message,
+            inputField: e.field,
+            ErrorType: e.constructor.name
+        })
     }
     if(e instanceof UniqueConstraintError){
-        return {
-            headers : {
-                'Content-Type' : 'application/json'
-            },
-            statusCode: 400,  // bad request
-            data: JSON.stringify(e.message)
-
-        } 
+        return httpError({
+            statusCode: 400,
+            errorMessage: e.message,
+            inputField: e.field,
+            ErrorType: e.constructor.name
+        })
     }
     if(e instanceof InvalidPropertyError){
-        return {
-            headers : {
-                'Content-Type' : 'application/json'
-            },
-            statusCode: 400,  // bad request
-            data: JSON.stringify(e.message)
-
-        } 
+        return httpError({
+            statusCode: 400,
+            errorMessage: e.message,
+            inputField: e.field,
+            ErrorType: e.constructor.name
+        })
     }
     if(e instanceof NotExistError){
-        return {
-            headers : {
-                'Content-Type' : 'application/json'
-            },
-            statusCode: 400,  // bad request
-            data: JSON.stringify(e.message)
-
-        } 
+        return httpError({
+            statusCode: 400,
+            errorMessage: e.message,
+            inputField: e.field,
+            ErrorType: e.constructor.name
+        })
     }
-    console.log("handle function", e.stack)
+    // if(e instanceof InternalServerError){
+    //     return httpError({
+    //         statusCode: 500,
+    //         errorMessage: e.message
+    //     })
+    // }
+    // console.log("handle Errors function", e.stack)
     return null
 }

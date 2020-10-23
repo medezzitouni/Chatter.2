@@ -1,7 +1,7 @@
 export class UniqueConstraintError extends Error {
-    constructor (value) {
-      super(`${value} exists, it has to be unique. try another username`)
-  
+    constructor (value, field) {
+      super(`the username < ${value} > exists, it has to be unique. try another one`)
+      this.field = field
       if (Error.captureStackTrace) {
         Error.captureStackTrace(this, UniqueConstraintError)
       }
@@ -9,9 +9,9 @@ export class UniqueConstraintError extends Error {
   }
   
   export class InvalidPropertyError extends Error {
-    constructor (msg) {
+    constructor (msg, field) {
       super(msg)
-  
+      this.field = field
       if (Error.captureStackTrace) {
         Error.captureStackTrace(this, InvalidPropertyError)
       }
@@ -21,7 +21,7 @@ export class UniqueConstraintError extends Error {
   export class RequiredParameterError extends Error {
     constructor (param) {
       super(`${param} can not be null or undefined.`)
-      this.param = param
+      this.field = param
       if (Error.captureStackTrace) {
         Error.captureStackTrace(this, RequiredParameterError)
       }
@@ -39,9 +39,9 @@ export class UniqueConstraintError extends Error {
   }
 
   export class NotExistError extends Error {
-    constructor (instance) {
-      super(`${instance} doesn't exist`)
-  
+    constructor (value, field='', instanceNotFounded='') {
+      super(`${value} does not exist`)
+      this.field = field
       if (Error.captureStackTrace) {
         Error.captureStackTrace(this, RequiredParameterError)
       }
